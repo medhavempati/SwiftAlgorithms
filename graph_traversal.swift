@@ -43,11 +43,27 @@ struct Stack {
 struct Queue {
     var items: [String] = []
 
-    mutating func push(value: String) {
+    mutating func push(_ value: String) {
         self.items.append(value)
     }
 
     mutating func pop() -> String {
+        if self.items[0] == nil {
+            fatalError("Stack is empty")
+        }
+        let result = self.items.removeFirst()
+        return result
+    }
+}
+
+struct AllPathsQueue {
+    var items: [[String]] = []
+
+    mutating func push(_ value: [String]) {
+        self.items.append(value)
+    }
+
+    mutating func pop() -> [String] {
         if self.items[0] == nil {
             fatalError("Stack is empty")
         }
@@ -79,7 +95,7 @@ func depthFirstSearch(graph: [String:[String]], source: String) {
 
 func breadthFirstSearch(graph: [String: [String]], source: String) {
     var queue = Queue()
-    queue.push(value: source)
+    queue.push(source)
     // print(queue)
 
     while !queue.items.isEmpty {
@@ -89,7 +105,7 @@ func breadthFirstSearch(graph: [String: [String]], source: String) {
         guard let neighbors = graph[current] else {
             continue
         }
-        neighbors.forEach { queue.push(value: $0) }
+        neighbors.forEach { queue.push($0) }
     }
 }
 
@@ -143,8 +159,35 @@ func undirectedPath(edges: [[String]], source: String, dest: String) -> Bool {
     // return true
 }
 
+func findAllPathsBfs(_ graph: [String:[String]], _ start: String, _ dest: String) {
+    var queue = AllPathsQueue()
+    queue.push([start])
+    while !queue.items.isEmpty {
+        // print(queue)
+        let current = queue.pop()
+        // print(current)
+        if current.last == dest { print(current) }
+        else {
+            guard let neighbors = graph[current.last!] else { return }
+            for neighbor in neighbors {
+                let temp = current + [neighbor]
+                queue.push(temp)
+            }
+        }
+    }
+}
+
+let allPathsGraph: [String: [String]] = [
+    "0": ["1", "2", "3"],
+    "1": ["3", "4"],
+    "2": ["3"],
+    "3": ["4"],
+    "4": []
+] 
+
 
 // depthFirstSearch(graph: graph, source: "a")
 // breadthFirstSearch(graph: graph, source: "a")
-var result = undirectedPath(edges: edges, source: "j", dest: "m")
-print(result)
+// var result = undirectedPath(edges: edges, source: "j", dest: "m")
+// print(result)
+findAllPathsBfs(allPathsGraph, "0", "4")
