@@ -27,7 +27,7 @@ struct Stack {
         return top
     }
 
-    mutating func push(value: String) {
+    mutating func push(_ value: String) {
         self.items.insert(value, at:0)
     }
 
@@ -76,7 +76,7 @@ struct AllPathsQueue {
 
 func depthFirstSearch(graph: [String:[String]], source: String) {
     var stack = Stack()
-    stack.push(value: source)
+    stack.push(source)
 
     while !stack.items.isEmpty {
         let currentNode = stack.pop()
@@ -86,7 +86,7 @@ func depthFirstSearch(graph: [String:[String]], source: String) {
             continue
         }
         for neighbor in neighbors {
-            stack.push(value: neighbor)
+            stack.push(neighbor)
         }
     }
 
@@ -177,6 +177,23 @@ func findAllPathsBfs(_ graph: [String:[String]], _ start: String, _ dest: String
     }
 }
 
+func allPathsDfsUtil(_ graph: [String: [String]], _ current: String, _ dest: String, _ pathStack: inout Stack) {
+    if current == dest { print(pathStack.items) }
+    else {
+        for neighbor in graph[current] ?? [] {
+            pathStack.push(neighbor)
+            allPathsDfsUtil(graph, neighbor, dest, &pathStack)
+        }
+    }
+    pathStack.pop()
+}
+
+func allPathsDfs(_ graph: [String: [String]], _ start: String, _ dest: String) {
+    var pathStack = Stack()
+    pathStack.push(start)
+    allPathsDfsUtil(graph, start, dest, &pathStack)
+}
+
 let allPathsGraph: [String: [String]] = [
     "0": ["1", "2", "3"],
     "1": ["3", "4"],
@@ -190,4 +207,5 @@ let allPathsGraph: [String: [String]] = [
 // breadthFirstSearch(graph: graph, source: "a")
 // var result = undirectedPath(edges: edges, source: "j", dest: "m")
 // print(result)
-findAllPathsBfs(allPathsGraph, "0", "4")
+// findAllPathsBfs(allPathsGraph, "0", "4")
+allPathsDfs(allPathsGraph, "0", "4")
