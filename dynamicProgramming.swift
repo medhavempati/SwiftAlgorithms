@@ -121,9 +121,11 @@ func canConstruct(_ str: String, _ substrings: [String]) -> Bool {
 // print(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"]))
 
 func editDistance(_ first: String, _ second: String, _ m: Int, _ n: Int) -> Int {
-    // m --> first string length
-    // n --> second string length
-    // return number of steps required to convert first to second string
+    /* 
+        m --> first string length
+        n --> second string length
+        return number of steps required to convert first to second string
+    */
 
     // Base conditions
     if m == 0 { return n }
@@ -140,7 +142,26 @@ func editDistance(_ first: String, _ second: String, _ m: Int, _ n: Int) -> Int 
         )
 }
 
-print(editDistance("sunday", "saturday", 6, 8))
+// print(editDistance("sunday", "saturday", 6, 8))
 
+func partitionUtil(_ list: [Int], _ n: Int, _ sum: Int) -> Bool {
+    if sum == 0 { return true }
+    if n == 0 && sum != 0 { return false } // list done, and sum != 0
 
+    if list[n-1] > sum { return partitionUtil(list, n-1, sum) }
+
+    else { 
+        return partitionUtil(list, n-1, sum) || partitionUtil(list, n-1, sum-list[n-1])
+    }
+}
+
+func partition(_ list: [Int]) -> Bool {
+    let totalSum = list.reduce(0, +)
+    if totalSum%2 != 0 { return false }
+    let n = list.count
+
+    return partitionUtil(list, n, totalSum/2) 
+}
+
+// print(partition([3, 1, 5, 9, 14]))
 
