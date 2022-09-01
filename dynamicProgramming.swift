@@ -120,10 +120,27 @@ func canConstruct(_ str: String, _ substrings: [String]) -> Bool {
 
 // print(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"]))
 
-func editDistance() {
-    
+func editDistance(_ first: String, _ second: String, _ m: Int, _ n: Int) -> Int {
+    // m --> first string length
+    // n --> second string length
+    // return number of steps required to convert first to second string
+
+    // Base conditions
+    if m == 0 { return n }
+    if n == 0 { return m }
+
+    let letter1 = first[first.index(first.startIndex, offsetBy: m-1)]
+    let letter2 = second[second.index(second.startIndex, offsetBy: n-1)]
+    if letter1 == letter2 { return editDistance(first, second, m-1, n-1) }
+
+    return 1 + min(
+        editDistance(first, second, m, n-1),   // Insert
+        editDistance(first, second, m-1, n),   // Remove
+        editDistance(first, second, m-1, n-1)  // Replace
+        )
 }
 
+print(editDistance("sunday", "saturday", 6, 8))
 
 
 
