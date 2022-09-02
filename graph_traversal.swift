@@ -202,6 +202,10 @@ let allPathsGraph: [String: [String]] = [
     "4": []
 ] 
 
+func topologicalSort(_ graph: [String: [String]]) {
+    
+}
+
 
 // depthFirstSearch(graph: graph, source: "a")
 // breadthFirstSearch(graph: graph, source: "a")

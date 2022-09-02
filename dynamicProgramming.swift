@@ -165,3 +165,5 @@ func partition(_ list: [Int]) -> Bool {
 
 // print(partition([3, 1, 5, 9, 14]))
 
+
+
